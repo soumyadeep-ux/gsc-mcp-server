@@ -3,9 +3,22 @@ import type { searchconsole_v1 } from 'googleapis';
 import {
   ListSitesInputSchema,
   SearchAnalyticsInputSchema,
+  InspectUrlInputSchema,
+  ListSitemapsInputSchema,
+  SubmitSitemapInputSchema,
+  DeleteSitemapInputSchema,
 } from '../schemas/inputs.js';
 import { listSites, listSitesDescription } from './list-sites.js';
 import { searchAnalytics, searchAnalyticsDescription } from './search-analytics.js';
+import { inspectUrl, inspectUrlDescription } from './url-inspection.js';
+import {
+  listSitemaps,
+  listSitemapsDescription,
+  submitSitemap,
+  submitSitemapDescription,
+  deleteSitemap,
+  deleteSitemapDescription,
+} from './sitemaps.js';
 
 export interface ToolDefinition {
   name: string;
@@ -27,6 +40,26 @@ export const toolDefinitions: ToolDefinition[] = [
     description: searchAnalyticsDescription,
     inputSchema: zodToJsonSchema(SearchAnalyticsInputSchema),
   },
+  {
+    name: 'gsc.inspect_url',
+    description: inspectUrlDescription,
+    inputSchema: zodToJsonSchema(InspectUrlInputSchema),
+  },
+  {
+    name: 'gsc.list_sitemaps',
+    description: listSitemapsDescription,
+    inputSchema: zodToJsonSchema(ListSitemapsInputSchema),
+  },
+  {
+    name: 'gsc.submit_sitemap',
+    description: submitSitemapDescription,
+    inputSchema: zodToJsonSchema(SubmitSitemapInputSchema),
+  },
+  {
+    name: 'gsc.delete_sitemap',
+    description: deleteSitemapDescription,
+    inputSchema: zodToJsonSchema(DeleteSitemapInputSchema),
+  },
 ];
 
 /**
@@ -46,6 +79,26 @@ export async function executeTool(
       return searchAnalytics(searchConsole, input);
     }
 
+    case 'gsc.inspect_url': {
+      const input = InspectUrlInputSchema.parse(args);
+      return inspectUrl(searchConsole, input);
+    }
+
+    case 'gsc.list_sitemaps': {
+      const input = ListSitemapsInputSchema.parse(args);
+      return listSitemaps(searchConsole, input);
+    }
+
+    case 'gsc.submit_sitemap': {
+      const input = SubmitSitemapInputSchema.parse(args);
+      return submitSitemap(searchConsole, input);
+    }
+
+    case 'gsc.delete_sitemap': {
+      const input = DeleteSitemapInputSchema.parse(args);
+      return deleteSitemap(searchConsole, input);
+    }
+
     default:
       return `Unknown tool: ${toolName}`;
   }
@@ -53,3 +106,5 @@ export async function executeTool(
 
 export { listSites } from './list-sites.js';
 export { searchAnalytics } from './search-analytics.js';
+export { inspectUrl } from './url-inspection.js';
+export { listSitemaps, submitSitemap, deleteSitemap } from './sitemaps.js';

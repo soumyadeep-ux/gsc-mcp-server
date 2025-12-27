@@ -8,8 +8,8 @@ A Model Context Protocol (MCP) server for Google Search Console. Query your sear
 
 - **Search Analytics**: Query clicks, impressions, CTR, and position data with flexible filtering
 - **Site Management**: List all your GSC properties with permission levels
-- **URL Inspection**: Check indexing status, crawl issues, and mobile usability (coming soon)
-- **Sitemap Management**: List, submit, and delete sitemaps (coming soon)
+- **URL Inspection**: Check indexing status, crawl issues, and mobile usability
+- **Sitemap Management**: List, submit, and delete sitemaps
 
 ## Quick Start
 
@@ -22,7 +22,7 @@ A Model Context Protocol (MCP) server for Google Search Console. Query your sear
 ### Installation
 
 ```bash
-git clone https://github.com/yourname/gsc-mcp-server.git
+git clone https://github.com/soumyadeep-ux/gsc-mcp-server.git
 cd gsc-mcp-server
 npm install
 cp .env.example .env
@@ -82,13 +82,8 @@ npx cursor-mcp add gsc-mcp-server node /absolute/path/to/gsc-mcp-server/dist/ind
 |------|-------------|
 | `gsc.list_sites` | List all your GSC properties with permission levels |
 | `gsc.search_analytics` | Query search performance data with filters |
-
-### Coming Soon
-
-| Tool | Description |
-|------|-------------|
-| `gsc.inspect_url` | Check URL indexing status |
-| `gsc.list_sitemaps` | List submitted sitemaps |
+| `gsc.inspect_url` | Check URL indexing status, crawl info, and mobile usability |
+| `gsc.list_sitemaps` | List all submitted sitemaps with status |
 | `gsc.submit_sitemap` | Submit a new sitemap |
 | `gsc.delete_sitemap` | Remove a sitemap |
 
@@ -101,6 +96,10 @@ Try these prompts in Claude:
 - "Show me queries with more than 1000 impressions but CTR below 2%"
 - "What keywords are driving traffic to my /blog page?"
 - "Compare my search performance for the last 7 days vs the previous 7 days"
+- "Is https://example.com/pricing indexed by Google?"
+- "Check the indexing status of my homepage"
+- "List all sitemaps submitted to my site"
+- "Submit https://example.com/sitemap.xml to Search Console"
 
 ## Configuration
 

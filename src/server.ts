@@ -42,6 +42,9 @@ export async function createServer(): Promise<Server> {
     );
   }
 
+  // Create a const reference for use in closures (TypeScript narrowing)
+  const gscClient = searchConsole;
+
   logger.info('Successfully authenticated with Google Search Console');
 
   // Create MCP server
@@ -75,7 +78,7 @@ export async function createServer(): Promise<Server> {
     logger.debug(`Handling CallTool request: ${name}`);
 
     try {
-      const result = await executeTool(searchConsole!, name, args ?? {});
+      const result = await executeTool(gscClient, name, args ?? {});
 
       return {
         content: [

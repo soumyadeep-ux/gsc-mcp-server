@@ -194,7 +194,7 @@ export async function getGoogleAuth(): Promise<GoogleAuth> {
         expiry_date: credentials.expiry_date ?? token.expiry_date,
       };
       saveToken(token);
-    } catch (error) {
+    } catch {
       throw new Error(
         'Failed to refresh OAuth token. Run "npm run auth" to re-authenticate.'
       );

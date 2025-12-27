@@ -56,7 +56,7 @@ export function getServiceAccountCredentials(): ServiceAccountCredentials | null
   try {
     const content = readFileSync(path, 'utf-8');
     return JSON.parse(content) as ServiceAccountCredentials;
-  } catch (error) {
+  } catch {
     throw new Error(`Failed to parse service account file: ${path}`);
   }
 }

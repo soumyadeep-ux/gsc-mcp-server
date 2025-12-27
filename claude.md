@@ -21,7 +21,9 @@ src/
 ├── tools/
 │   ├── index.ts          # Tool registry and executor
 │   ├── list-sites.ts     # gsc.list_sites implementation
-│   └── search-analytics.ts # gsc.search_analytics implementation
+│   ├── search-analytics.ts # gsc.search_analytics implementation
+│   ├── url-inspection.ts # gsc.inspect_url implementation
+│   └── sitemaps.ts       # gsc.list_sitemaps, submit, delete
 ├── schemas/
 │   ├── index.ts          # Re-exports
 │   └── inputs.ts         # Zod schemas for tool inputs
@@ -126,6 +128,74 @@ Query search performance metrics with filtering.
 - "Show my top 10 keywords by clicks"
 - "What pages have more than 1000 impressions but CTR under 2%?"
 - "Show queries containing 'seo' for the last 7 days"
+
+### gsc.inspect_url
+
+Check indexing status, crawl info, and mobile usability for a URL.
+
+**Input:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `siteUrl` | string | Yes | GSC property URL |
+| `inspectionUrl` | string | Yes | Full URL to inspect |
+
+**Output:** Detailed report including:
+- Indexing status and coverage state
+- Last crawl time and page fetch state
+- Canonical URLs (Google vs user-declared)
+- Mobile usability verdict and issues
+- Rich results detection
+- AMP status (if applicable)
+
+**Example prompts:**
+- "Is https://example.com/pricing indexed?"
+- "Check the mobile usability of my homepage"
+- "What's the indexing status of https://example.com/blog/post-1"
+
+### gsc.list_sitemaps
+
+List all sitemaps submitted to a GSC property.
+
+**Input:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `siteUrl` | string | Yes | GSC property URL |
+
+**Output:** Table of sitemaps with:
+- Sitemap URL and type
+- Last submitted and downloaded dates
+- Warning and error counts
+- Content breakdown (URLs submitted vs indexed)
+
+**Example prompt:** "List all sitemaps for my site"
+
+### gsc.submit_sitemap
+
+Submit a new sitemap to Google Search Console.
+
+**Input:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `siteUrl` | string | Yes | GSC property URL |
+| `sitemapUrl` | string | Yes | Full sitemap URL to submit |
+
+**Output:** Confirmation message
+
+**Example prompt:** "Submit https://example.com/sitemap.xml to Search Console"
+
+### gsc.delete_sitemap
+
+Remove a sitemap from Google Search Console.
+
+**Input:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `siteUrl` | string | Yes | GSC property URL |
+| `sitemapUrl` | string | Yes | Sitemap URL to delete |
+
+**Output:** Confirmation message
+
+**Example prompt:** "Delete the old sitemap from my Search Console"
 
 ## How to Add a New Tool
 
@@ -241,8 +311,10 @@ The server uses these GSC API resources:
 |----------|--------|------|
 | `sites` | `list()` | gsc.list_sites |
 | `searchanalytics` | `query()` | gsc.search_analytics |
-| `urlInspection.index` | `inspect()` | gsc.inspect_url (planned) |
-| `sitemaps` | `list()`, `submit()`, `delete()` | gsc.list_sitemaps, etc. (planned) |
+| `urlInspection.index` | `inspect()` | gsc.inspect_url |
+| `sitemaps` | `list()` | gsc.list_sitemaps |
+| `sitemaps` | `submit()` | gsc.submit_sitemap |
+| `sitemaps` | `delete()` | gsc.delete_sitemap |
 
 API Documentation: https://developers.google.com/webmaster-tools/v1/api_reference_index
 
