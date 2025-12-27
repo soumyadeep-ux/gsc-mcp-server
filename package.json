@@ -1,0 +1,61 @@
+{
+  "name": "gsc-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for Google Search Console - query analytics, inspect URLs, manage sitemaps",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "gsc-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:http": "node dist/http/server.js",
+    "auth": "tsx src/auth/cli.ts",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "inspector": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "google-search-console",
+    "gsc",
+    "seo",
+    "claude",
+    "ai",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourname/gsc-mcp-server.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "googleapis": "^144.0.0",
+    "open": "^10.1.0",
+    "zod": "^3.24.0",
+    "zod-to-json-schema": "^3.24.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "prettier": "^3.4.0"
+  }
+}
