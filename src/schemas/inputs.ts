@@ -44,16 +44,23 @@ export const SearchAnalyticsInputSchema = z.object({
     .describe(
       'GSC property URL (e.g., "sc-domain:example.com" or "https://www.example.com/")'
     ),
+  days: z
+    .number()
+    .int()
+    .min(1)
+    .max(540)
+    .optional()
+    .describe('Number of days to look back from today (e.g., 7, 28, 90). Server calculates dates automatically. Preferred over explicit dates.'),
   startDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
-    .describe('Start date in YYYY-MM-DD format. Defaults to 28 days ago.'),
+    .describe('Optional explicit start date (YYYY-MM-DD). Overrides "days" if both provided.'),
   endDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
-    .describe('End date in YYYY-MM-DD format. Defaults to today.'),
+    .describe('Optional explicit end date (YYYY-MM-DD). Defaults to today.'),
   dimensions: z
     .array(DimensionEnum)
     .optional()

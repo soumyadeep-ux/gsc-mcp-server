@@ -39,11 +39,15 @@ export async function searchAnalytics(
 ): Promise<string> {
   logger.debug('Executing search_analytics tool', { siteUrl: input.siteUrl });
 
-  const { startDate, endDate } = parseDateRange(input.startDate, input.endDate);
+  // Pass days parameter for server-side date calculation (prevents LLM training data issues)
+  const { startDate, endDate } = parseDateRange(input.startDate, input.endDate, input.days);
   const dimensions = input.dimensions ?? ['query'];
-  const rowLimit = input.rowLimit ?? 100;
+  const rowLimit = input.rowLimit ?? 1000; // Increased from 100 for more comprehensive data
   const startRow = input.startRow ?? 0;
   const searchType = input.searchType ?? 'web';
+
+  // Check if page dimension is used (affects aggregationType)
+  const hasPageDimension = dimensions.some((d) => d.toLowerCase() === 'page');
 
   try {
     const request: searchconsole_v1.Schema$SearchAnalyticsQueryRequest = {
@@ -54,6 +58,10 @@ export async function searchAnalytics(
       startRow,
       type: searchType.toUpperCase(),
       dimensionFilterGroups: convertFilters(input.filters),
+      // dataState: 'all' includes fresh/unfinalized data (matches GSC dashboard behavior)
+      dataState: 'all',
+      // aggregationType: 'byProperty' aggregates URL variants (www/non-www), but cannot be used with page dimension
+      ...(hasPageDimension ? {} : { aggregationType: 'byProperty' }),
     };
 
     logger.debug('Search analytics request', request);

@@ -42,13 +42,27 @@ export function isValidDateString(dateString: string): boolean {
 
 /**
  * Parses a date range, using defaults if not provided
+ * Supports 'days' parameter for server-side date calculation (prevents LLM training data date issues)
  */
 export function parseDateRange(
   startDate?: string,
-  endDate?: string
+  endDate?: string,
+  days?: number
 ): { startDate: string; endDate: string } {
+  const resolvedEndDate = endDate ?? getDefaultEndDate();
+
+  // Priority: explicit startDate > days parameter > default 28 days
+  let resolvedStartDate: string;
+  if (startDate) {
+    resolvedStartDate = startDate;
+  } else if (days) {
+    resolvedStartDate = formatDate(daysAgo(days));
+  } else {
+    resolvedStartDate = getDefaultStartDate();
+  }
+
   return {
-    startDate: startDate ?? getDefaultStartDate(),
-    endDate: endDate ?? getDefaultEndDate(),
+    startDate: resolvedStartDate,
+    endDate: resolvedEndDate,
   };
 }
